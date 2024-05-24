@@ -10,6 +10,28 @@ const connection = mysql.createConnection({
   database: process.env.MYSQL_DATABASE,
 });
 
+// Function to create a table if it doesn't exist
+function createTableIfNotExists(tableName, createQuery, successMessage) {
+  connection.query(`SHOW TABLES LIKE '${tableName}'`, (err, results) => {
+    if (err) {
+      console.error(`Error checking ${tableName} table existence: `, err);
+      return;
+    }
+
+    if (results.length === 0) {
+      connection.query(createQuery, (err) => {
+        if (err) {
+          console.error(`Error creating ${tableName} table: `, err);
+          return;
+        }
+        console.log(`${tableName} table created successfully`);
+      });
+    } else {
+      console.log(`${tableName} table already exists`);
+    }
+  });
+}
+
 connection.on("connect", () => {
   console.log("Connected to database");
 });
@@ -18,35 +40,8 @@ connection.on("error", (error) => {
   console.log("Something went wrong: ", error);
 });
 
-connection.query("SHOW TABLES LIKE 'Users'", (err, results) => {
-  if (err) {
-    console.error("Error checking Users table existence: ", err);
-    return;
-  }
+createTableIfNotExists("Users", createUserTableQuery, "Users");
 
-  if (results.length === 0) {
-    connection.query(createUserTableQuery, (err, results) => {
-      if (err) {
-        console.error("Error creating Users table: ", err);
-        return;
-      }
-      console.log("Users table created successfully");
-    });
-  } else {
-    console.log("Users table already exists");
-  }
-});
-
-connection.query(createBookTableQuery, (err, results) => {
-  if (err) {
-    console.error("Error creating Book table: ", err);
-    return;
-  }
-  if (results.warningCount > 0) {
-    console.log("Book table already exists or was created with warnings");
-  } else {
-    console.log("Book table created successfully");
-  }
-});
+createTableIfNotExists("Books", createBookTableQuery, "Books");
 
 module.exports = connection;
