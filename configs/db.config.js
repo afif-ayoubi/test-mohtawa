@@ -1,6 +1,6 @@
 const mysql = require("mysql2");
 require("dotenv").config();
-const createBookTableQuery = require("../models/book");
+const createBookTableQuery = require("../tables/book");
 
 const connection = mysql.createConnection({
   host: process.env.MYSQL_HOST,
