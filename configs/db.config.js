@@ -10,7 +10,6 @@ const connection = mysql.createConnection({
   database: process.env.MYSQL_DATABASE,
 });
 
-// Function to create a table if it doesn't exist
 function createTableIfNotExists(tableName, createQuery, successMessage) {
   connection.query(`SHOW TABLES LIKE '${tableName}'`, (err, results) => {
     if (err) {
