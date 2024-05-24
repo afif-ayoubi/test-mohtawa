@@ -1,5 +1,6 @@
 const mysql = require("mysql2");
-require('dotenv').config();
+require("dotenv").config();
+const createBookTableQuery = require("../models/book");
 
 const connection = mysql.createConnection({
   host: process.env.MYSQL_HOST,
@@ -13,4 +14,13 @@ connection.once("connect", () => {
 connection.once("error", (error) => {
   console.log("something went wrong: ", error);
 });
+
+connection.query(createBookTableQuery, (err) => {
+  if (err) {
+    console.error("Error creating Book table: " + err.stack);
+    return;
+  }
+  console.log("Book table created or already exists");
+});
+
 module.exports = connection;
