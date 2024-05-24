@@ -6,5 +6,5 @@ CREATE TABLE IF NOT EXISTS Books (
   ISBN VARCHAR(50) NOT NULL,
   PublishedDate DATE NOT NULL
 );
-`;
+`;  
 module.exports = createBookTableQuery;
