@@ -1,6 +1,7 @@
 const mysql = require("mysql2");
 require("dotenv").config();
-const createBookTableQuery = require("../tables/book");
+const createBookTableQuery = require("../tables/books");
+const createUserTableQuery = require("../tables/users");
 
 const connection = mysql.createConnection({
   host: process.env.MYSQL_HOST,
@@ -8,19 +9,44 @@ const connection = mysql.createConnection({
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
 });
-connection.once("connect", () => {
+
+connection.on("connect", () => {
   console.log("Connected to database");
 });
-connection.once("error", (error) => {
-  console.log("something went wrong: ", error);
+
+connection.on("error", (error) => {
+  console.log("Something went wrong: ", error);
 });
 
-connection.query(createBookTableQuery, (err) => {
+connection.query("SHOW TABLES LIKE 'Users'", (err, results) => {
   if (err) {
-    console.error("Error creating Book table: " + err.stack);
+    console.error("Error checking Users table existence: ", err);
     return;
   }
-  console.log("Book table created or already exists");
+
+  if (results.length === 0) {
+    connection.query(createUserTableQuery, (err, results) => {
+      if (err) {
+        console.error("Error creating Users table: ", err);
+        return;
+      }
+      console.log("Users table created successfully");
+    });
+  } else {
+    console.log("Users table already exists");
+  }
+});
+
+connection.query(createBookTableQuery, (err, results) => {
+  if (err) {
+    console.error("Error creating Book table: ", err);
+    return;
+  }
+  if (results.warningCount > 0) {
+    console.log("Book table already exists or was created with warnings");
+  } else {
+    console.log("Book table created successfully");
+  }
 });
 
 module.exports = connection;
