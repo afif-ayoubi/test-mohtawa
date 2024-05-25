@@ -14,7 +14,7 @@ function createTableIfNotExists(tableName, createQuery, successMessage) {
   connection.query(`SHOW TABLES LIKE '${tableName}'`, (err, results) => {
     if (err) {
       console.error(`Error checking ${tableName} table existence: `, err);
-      return;
+      return; 
     }
 
     if (results.length === 0) {
