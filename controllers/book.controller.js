@@ -37,12 +37,12 @@ const bookController = {
   addBook: (req, res) => {
     const { title, author, isbn, publishedDate } = req.body;
 
-    if (!author) {
+    if (!author) 
       return res.status(400).json({ message: " Author are required." });
-    }
-    if (!title) {
+    
+    if (!title) 
       return res.status(400).json({ message: "Title are required." });
-    }
+    
 
     connection.execute(
       "INSERT INTO Books (Title, Author, ISBN, PublishedDate) VALUES (?, ?, ?, ?)",
@@ -72,12 +72,12 @@ const bookController = {
     const { id } = req.params;
     const { title, author, isbn, publishedDate } = req.body;
 
-    if (!author) {
+    if (!author) 
       return res.status(400).json({ message: " Author are required." });
-    }
-    if (!title) {
+    
+    if (!title) 
       return res.status(400).json({ message: "Title are required." });
-    }
+    
 
     connection.execute(
       "UPDATE Books SET Title = ?, Author = ?, ISBN = ?, PublishedDate = ? WHERE Id = ?",
