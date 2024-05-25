@@ -6,3 +6,4 @@ CREATE TABLE IF NOT EXISTS Users (
 );
 `;  
 module.exports = createUserTableQuery;
+  
