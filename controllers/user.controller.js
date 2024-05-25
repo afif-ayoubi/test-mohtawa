@@ -10,12 +10,12 @@ const userController = {
   signup: async (req, res) => {
     try {
       const { username, password } = req.body;
-      if (!username) 
+      if (!username)
         return res.status(400).json({ message: " UserName are required." });
-      
-      if (!password) 
+
+      if (!password)
         return res.status(400).json({ message: "Password are required." });
-      
+
       connection.execute(
         "SELECT * FROM Users WHERE Username = ?",
         [username],
@@ -55,10 +55,10 @@ const userController = {
   login: async (req, res) => {
     try {
       const { username, password } = req.body;
-      if (!username) 
+      if (!username)
         return res.status(400).json({ message: " UserName are required." });
-      
-      if (!password) 
+
+      if (!password)
         return res.status(400).json({ message: "Password are required." });
       connection.execute(
         "SELECT * FROM Users WHERE Username = ?",
@@ -78,7 +78,6 @@ const userController = {
 
           if (!isPasswordValid)
             return res.status(401).json({ message: "Invalid password." });
-
           const token = generateToken(user.Id);
 
           res.status(200).json({ token });
