@@ -21,13 +21,16 @@ const authMiddleware = async (req, res, next) => {
         }
         if (results.length === 0)
           return res.status(401).send("Unauthenticated");
-
+          
         req.user = results[0];
         next();
       }
     );
   } catch (error) {
-    console.log("Internal server error: ", error);
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).send("Token expired. Please log in again.");
+    }
+    console.error("Internal server error: ", error);
     return res.status(500).send("Internal server error.");
   }
 };
