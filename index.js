@@ -1,7 +1,7 @@
-require("./apis/configs/db.config.js");
+require("./configs/db.config.js");
 
-const bookRouter = require("./apis/routes/book.routes");
-const userRoutes = require("./apis/routes/user.routes");
+const bookRouter = require("./routes/book.routes");
+const userRoutes = require("./routes/user.routes");
 require("dotenv").config();
 const express = require("express");
 
