@@ -26,7 +26,7 @@ const bookController = {
           return res.status(500).json({ message: "Internal server error." });
         }
 
-        if (!result)
+        if (result.length === 0)
           return res.status(404).json({ message: "Book not found." });
 
         res.status(200).json(result[0]);
@@ -37,12 +37,10 @@ const bookController = {
   addBook: (req, res) => {
     const { title, author, isbn, publishedDate } = req.body;
 
-    if (!author) 
+    if (!author)
       return res.status(400).json({ message: " Author are required." });
-    
-    if (!title) 
-      return res.status(400).json({ message: "Title are required." });
-    
+
+    if (!title) return res.status(400).json({ message: "Title are required." });
 
     connection.execute(
       "INSERT INTO Books (Title, Author, ISBN, PublishedDate) VALUES (?, ?, ?, ?)",
@@ -72,12 +70,10 @@ const bookController = {
     const { id } = req.params;
     const { title, author, isbn, publishedDate } = req.body;
 
-    if (!author) 
+    if (!author)
       return res.status(400).json({ message: " Author are required." });
-    
-    if (!title) 
-      return res.status(400).json({ message: "Title are required." });
-    
+
+    if (!title) return res.status(400).json({ message: "Title are required." });
 
     connection.execute(
       "UPDATE Books SET Title = ?, Author = ?, ISBN = ?, PublishedDate = ? WHERE Id = ?",
@@ -115,7 +111,8 @@ const bookController = {
           console.error("Error deleting book: ", error);
           return res.status(500).json({ message: "Internal server error." });
         }
-        if(!result.affectedRows) return res.status(404).json({ message: "Book not found." });
+        if (!result.affectedRows)
+          return res.status(404).json({ message: "Book not found." });
 
         res.status(200).json({ message: "Book deleted successfully." });
       }
