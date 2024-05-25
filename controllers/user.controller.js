@@ -47,7 +47,7 @@ const userController = {
         }
 
         if (users.length === 0) {  
-          return res.status(401).json({ message: "Invalid username or password." });
+          return res.status(401).json({ message: "Invalid username." });
         }
 
         const user = users[0];
@@ -55,7 +55,7 @@ const userController = {
         const isPasswordValid = await bcrypt.compare(password, user.Password);
 
         if (!isPasswordValid) {
-          return res.status(401).json({ message: "Invalid username or password." });
+          return res.status(401).json({ message: "Invalid password." });
         }
         const token = generateToken(user.Id);
 
