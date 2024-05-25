@@ -17,9 +17,8 @@ const authMiddleware = async (req, res, next) => {
         return res.status(500).send("Internal server error.");
       }
 
-      if (results.length === 0) {
-        return res.status(401).send("Unauthenticated");
-      }
+      if (results.length === 0)  return res.status(401).send("Unauthenticated");
+      
 
       req.user = results[0];
       next();
