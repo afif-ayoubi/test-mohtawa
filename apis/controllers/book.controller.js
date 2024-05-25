@@ -115,6 +115,7 @@ const bookController = {
           console.error("Error deleting book: ", error);
           return res.status(500).json({ message: "Internal server error." });
         }
+        if(!result.affectedRows) return res.status(404).json({ message: "Book not found." });
 
         res.status(200).json({ message: "Book deleted successfully." });
       }
